@@ -12,11 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import ie.setu.wishfulgames.ui.theme.WishfulgamesTheme
+import timber.log.Timber
+import timber.log.Timber.i
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        Timber.plant(Timber.DebugTree())
+        i("Placemark MainActivity started..")
         setContent {
             WishfulgamesTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
