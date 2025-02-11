@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import ie.setu.wishfulgames.ui.theme.WishfulgamesTheme
+import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 import timber.log.Timber
 import timber.log.Timber.i
 
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         Timber.plant(Timber.DebugTree())
         i("Placemark MainActivity started..")
         setContent {
-            WishfulgamesTheme {
+            WishfulgamesJPCTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Android",
@@ -45,7 +45,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    WishfulgamesTheme {
+    WishfulgamesJPCTheme {
         Greeting("Android")
     }
 }
