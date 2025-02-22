@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Slider
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -28,10 +31,10 @@ fun ScreenCreate(modifier: Modifier = Modifier,
                  games: SnapshotStateList<GameModel>
 ) {
 
-    val title by remember { mutableStateOf("") }
-    val description by remember { mutableStateOf("") }
-    val genre by remember { mutableStateOf("") }
-    val rating by remember { mutableIntStateOf(0) }
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var genre by remember { mutableStateOf("") }
+    var rating by remember { mutableIntStateOf(0) }
     var price by remember { mutableIntStateOf(0) }
 
     Column {
@@ -44,6 +47,32 @@ fun ScreenCreate(modifier: Modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             CreateHeader()
+
+            TextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text("Title") }
+            )
+
+            TextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Description") }
+            )
+
+            TextField(
+                value = genre,
+                onValueChange = { genre = it },
+                label = { Text("Genre") }
+            )
+
+            Text(text = "Rating: $rating")
+            Slider(
+                value = rating.toFloat(),
+                onValueChange = { rating = it.toInt() },
+                valueRange = 1f..10f,
+                steps = 8,
+            )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
