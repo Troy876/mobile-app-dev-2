@@ -1,4 +1,7 @@
 package ie.setu.wishfulgames.models
 
-data class GameModel(var title : String = "")
-
+data class GameModel(var title : String = "",
+                     var description : String = "",
+                     var genre : String = "",
+                     var rating : Int = 0,
+                     var price : Int = 0)
