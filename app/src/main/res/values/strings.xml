@@ -13,4 +13,8 @@
     <string name="text_gamePriceHint">Enter game price</string>
     <string name="createHeader">Add Game</string>
     <string name="createInstruction">Fill out all required fields</string>
+    <string name="libraryHeader">Games Library</string>
+    <string name="show_less">Show Less</string>
+    <string name="show_more">Show More</string>
+    <string name="empty_library">Library is empty - add a game</string>
 </resources>

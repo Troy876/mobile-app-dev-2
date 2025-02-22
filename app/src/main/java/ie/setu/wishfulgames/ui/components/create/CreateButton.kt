@@ -33,8 +33,7 @@ import timber.log.Timber
 fun CreateButton(
     modifier: Modifier = Modifier,
     game: GameModel,
-    games: SnapshotStateList<GameModel>,
-    function: () -> Unit
+    games: SnapshotStateList<GameModel>
 ) {
     Row {
         Button(
@@ -86,6 +85,6 @@ fun CreateButtonPreview() {
             Modifier,
             GameModel(),
             games = libraryList.toMutableStateList()
-        ) {}
+        )
     }
 }

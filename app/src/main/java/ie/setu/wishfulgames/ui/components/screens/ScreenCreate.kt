@@ -41,9 +41,10 @@ fun ScreenCreate(modifier: Modifier = Modifier,
                 start = 24.dp,
                 end = 24.dp
             ),
-            verticalArrangement = Arrangement.spacedBy(30.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             CreateHeader()
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             )
