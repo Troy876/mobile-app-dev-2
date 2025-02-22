@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -82,8 +83,21 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun ShowSupportText(isError : Boolean)
+{
+    if (isError)
+        Text(
+            text = "This field is required",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.error,
+        )
+    else Text(text = "")
+}
+
+@Composable
 fun AddGame(modifier: Modifier = Modifier) {
     var title by remember { mutableStateOf("") }
+    var showError by remember { mutableStateOf(false) }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -98,18 +112,35 @@ fun AddGame(modifier: Modifier = Modifier) {
                 cursorColor = MaterialTheme.colorScheme.primary
             ),
             value = title,
-            onValueChange = { title = it },
+            onValueChange = {
+                title = it
+                showError = false
+            },
+            isError = showError,
             modifier = Modifier.fillMaxWidth(),
             label = { Text(stringResource(id = R.string.text_gameTitleHint)) },
             trailingIcon = {
-                Icon(
-                    Icons.Default.Edit, contentDescription = "",
-                    tint = Color.Black
-                )
-            },
+                if (showError)
+                    Icon(
+                        Icons.Filled.Warning, "error",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                else
+                    Icon(
+                        Icons.Default.Edit, contentDescription = "add/edit",
+                        tint = Color.Black
+                    )
+            } ,
+            supportingText = { ShowSupportText(showError) }
         )
         Button(
-            onClick = { },
+            onClick = {
+                if (title.isEmpty()) {
+                    showError = true
+                } else {
+                    addGame(title)
+                }
+            },
             modifier = Modifier.align(Alignment.CenterHorizontally),
             elevation = ButtonDefaults.buttonElevation(20.dp)
         ) {
@@ -117,8 +148,7 @@ fun AddGame(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.width(width = 4.dp))
             Text(stringResource(id = R.string.button_addGame))
         }
-    }
-}
+    }}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -153,4 +183,8 @@ fun AddGamePreview() {
             )
         }
     }
+}
+
+fun addGame(title: String) {
+    i("Game title entered is : $title")
 }
