@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ie.setu.wishfulgames.models.GameModel
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -186,5 +187,7 @@ fun AddGamePreview() {
 }
 
 fun addGame(title: String) {
-    i("Game title entered is : $title")
+    val game = GameModel()
+    game.title = title
+    i("Game title entered is : ${game.title}")
 }
