@@ -29,8 +29,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import ie.setu.wishfulgames.models.GameModel
+import ie.setu.wishfulgames.navigation.Create
+import ie.setu.wishfulgames.navigation.Library
+import ie.setu.wishfulgames.navigation.NavHostProvider
+import ie.setu.wishfulgames.navigation.allDestinations
+import ie.setu.wishfulgames.ui.components.general.BottomAppBarProvider
 import ie.setu.wishfulgames.ui.components.general.MenuItem
+import ie.setu.wishfulgames.ui.components.general.TopAppBarProvider
 import ie.setu.wishfulgames.ui.components.screens.ScreenCreate
 import ie.setu.wishfulgames.ui.components.screens.ScreenLibrary
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
@@ -55,60 +64,37 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WishfulGamesApp(modifier: Modifier = Modifier) {
+fun WishfulGamesApp(modifier: Modifier = Modifier,
+                    navController: NavHostController = rememberNavController()) {
     val games = remember { mutableStateListOf<GameModel>() }
     var selectedMenuItem by remember { mutableStateOf<MenuItem?>(MenuItem.Library) }
+    val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = currentNavBackStackEntry?.destination
+    val currentBottomScreen =
+        allDestinations.find { it.route == currentDestination?.route } ?: Library
 
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        color = Color.White
-                    )
-                },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                actions = {
-                    if(selectedMenuItem == MenuItem.Create) {
-                        IconButton(onClick = {
-                            selectedMenuItem = MenuItem.Library
-                        }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.List,
-                                contentDescription = "Options",
-                                tint = Color.White,
-                                modifier = Modifier.size(40.dp)
-                            )
-                        }
-                    }
-                    else {
-                        IconButton(onClick = {
-                            selectedMenuItem = MenuItem.Create
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.Add,
-                                contentDescription = "Options",
-                                tint = Color.White,
-                                modifier = Modifier.size(40.dp)
-                            )
-                        }
-                    }
-                }
-            )
+            TopAppBarProvider(
+                currentScreen = currentBottomScreen,
+                canNavigateBack = navController.previousBackStackEntry != null
+            ) { navController.navigateUp() }
         },
-        content = {
-            when (selectedMenuItem) {
-                MenuItem.Create -> ScreenCreate(modifier = modifier, games = games)
-                MenuItem.Library -> ScreenLibrary(modifier = modifier, games = games)
-                else -> {}
-            }
+        content = { paddingValues ->
+            NavHostProvider(
+                modifier = modifier,
+                navController = navController,
+                paddingValues = paddingValues,
+                games = games)
+        },
+        bottomBar = {
+            BottomAppBarProvider(navController,
+                currentScreen = currentBottomScreen,)
         }
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable

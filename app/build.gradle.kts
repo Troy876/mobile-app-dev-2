@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.numberPicker)
     testImplementation(libs.junit)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.navigation.compose)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
