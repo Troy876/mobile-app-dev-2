@@ -11,16 +11,16 @@ interface AppDestination {
     val route: String
 }
 
-object Create : AppDestination {
-    override val icon = Icons.AutoMirrored.Filled.List
-    override val label = "Create"
-    override val route = "create"
-}
-
 object Library : AppDestination {
-    override val icon = Icons.Filled.AddCircle
+    override val icon = Icons.AutoMirrored.Filled.List
     override val label = "Library"
     override val route = "library"
+}
+
+object Create : AppDestination {
+    override val icon = Icons.Filled.AddCircle
+    override val label = "Create"
+    override val route = "create"
 }
 
 val bottomAppBarDestinations = listOf(Library, Create)

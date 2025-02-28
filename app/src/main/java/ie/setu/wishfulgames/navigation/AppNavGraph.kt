@@ -21,14 +21,14 @@ fun NavHostProvider(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Create.route,
+        startDestination = Library.route,
         modifier = Modifier.padding(paddingValues = paddingValues)) {
 
-        composable(route = Library.route) {
-            ScreenLibrary(modifier = modifier,games = games)
-        }
         composable(route = Create.route) {
-            ScreenCreate(modifier = modifier, games = games)
+            ScreenCreate(modifier = modifier,games = games)
+        }
+        composable(route = Library.route) {
+            ScreenLibrary(modifier = modifier, games = games)
         }
     }
 }
