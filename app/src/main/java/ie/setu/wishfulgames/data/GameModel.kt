@@ -1,6 +1,12 @@
 package ie.setu.wishfulgames.data
 
-data class GameModel(var title : String = "",
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class GameModel(@PrimaryKey(autoGenerate = true)
+                     var id : Int = 0,
+                     var title : String = "",
                      var description : String = "",
                      var genre : String = "",
                      var rating : Int = 0,

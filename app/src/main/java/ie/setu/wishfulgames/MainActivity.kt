@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ie.setu.wishfulgames.data.GameModel
 import ie.setu.wishfulgames.navigation.Library
 import ie.setu.wishfulgames.navigation.NavHostProvider
@@ -29,6 +30,7 @@ import ie.setu.wishfulgames.ui.components.general.MenuItem
 import ie.setu.wishfulgames.ui.components.general.TopAppBarProvider
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
