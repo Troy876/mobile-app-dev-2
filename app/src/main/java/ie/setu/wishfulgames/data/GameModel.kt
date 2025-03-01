@@ -1,4 +1,4 @@
-package ie.setu.wishfulgames.models
+package ie.setu.wishfulgames.data
 
 data class GameModel(var title : String = "",
                      var description : String = "",

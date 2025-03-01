@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import ie.setu.wishfulgames.models.GameModel
-import ie.setu.wishfulgames.ui.components.screens.ScreenCreate
-import ie.setu.wishfulgames.ui.components.screens.ScreenLibrary
+import ie.setu.wishfulgames.data.GameModel
+import ie.setu.wishfulgames.ui.screens.create.ScreenCreate
+import ie.setu.wishfulgames.ui.screens.library.ScreenLibrary
 
 @Composable
 fun NavHostProvider(

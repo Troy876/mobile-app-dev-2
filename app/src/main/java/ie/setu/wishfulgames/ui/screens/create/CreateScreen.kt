@@ -1,4 +1,4 @@
-package ie.setu.wishfulgames.ui.components.screens
+package ie.setu.wishfulgames.ui.screens.create
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ie.setu.wishfulgames.models.GameModel
-import ie.setu.wishfulgames.models.libraryList
+import ie.setu.wishfulgames.data.GameModel
+import ie.setu.wishfulgames.data.libraryList
 import ie.setu.wishfulgames.ui.components.create.CreateButton
 import ie.setu.wishfulgames.ui.components.create.CreateHeader
 import ie.setu.wishfulgames.ui.components.create.PricePicker

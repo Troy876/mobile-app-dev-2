@@ -23,8 +23,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ie.setu.wishfulgames.models.GameModel
-import ie.setu.wishfulgames.models.libraryList
+import ie.setu.wishfulgames.data.GameModel
+import ie.setu.wishfulgames.data.libraryList
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 import ie.setu.wishfulgames.R
 import timber.log.Timber

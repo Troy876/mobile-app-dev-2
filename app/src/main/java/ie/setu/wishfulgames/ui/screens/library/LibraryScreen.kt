@@ -1,4 +1,4 @@
-package ie.setu.wishfulgames.ui.components.screens
+package ie.setu.wishfulgames.ui.screens.library
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ie.setu.wishfulgames.R
-import ie.setu.wishfulgames.models.GameModel
-import ie.setu.wishfulgames.models.libraryList
+import ie.setu.wishfulgames.data.GameModel
+import ie.setu.wishfulgames.data.libraryList
 import ie.setu.wishfulgames.ui.components.general.Centre
 import ie.setu.wishfulgames.ui.components.library.GameCardList
 import ie.setu.wishfulgames.ui.components.library.LibraryHeader
