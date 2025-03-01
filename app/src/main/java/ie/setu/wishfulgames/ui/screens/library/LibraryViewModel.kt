@@ -26,4 +26,10 @@ constructor(private val repository: RoomRepository) : ViewModel() {
             }
         }
     }
+
+    fun deleteGame(game: GameModel) {
+        viewModelScope.launch {
+            repository.delete(game)
+        }
+    }
 }

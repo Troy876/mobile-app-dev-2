@@ -52,7 +52,11 @@ fun LibraryScreen(modifier: Modifier = Modifier,
                 }
             else
                 GameCardList(
-                    games = games
+                    games = games,
+                    onDeleteGame = {
+                            game: GameModel ->
+                                libraryViewModel.deleteGame(game)
+                    }
                 )
         }
     }
@@ -93,7 +97,8 @@ fun PreviewLibraryScreen(modifier: Modifier = Modifier,
                 }
             else
                 GameCardList(
-                    games = games
+                    games = games,
+                    onDeleteGame = {}
                 )
         }
     }

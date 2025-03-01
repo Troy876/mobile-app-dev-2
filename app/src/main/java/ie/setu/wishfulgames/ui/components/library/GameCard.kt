@@ -3,16 +3,23 @@ package ie.setu.wishfulgames.ui.components.library
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,7 +44,8 @@ fun GameCard(
     description: String,
     genre: String,
     rating: Int,
-    price: Int
+    price: Int,
+    onClickDelete: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -49,7 +57,8 @@ fun GameCard(
             description,
             genre,
             rating,
-            price)
+            price,
+            onClickDelete)
     }
 }
 
@@ -59,9 +68,11 @@ private fun GameCardContent(
     description: String,
     genre: String,
     rating: Int,
-    price: Int
+    price: Int,
+    onClickDelete: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
+    var showDeleteConfirmDialog by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -107,6 +118,25 @@ private fun GameCardContent(
             }
             if (expanded) {
                 Text(modifier = Modifier.padding(vertical = 16.dp), text = description)
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween) {
+                    FilledTonalButton(onClick = {}) {
+                        Text(text = "Show More...")
+                    }
+
+                    FilledTonalIconButton(onClick = {
+                        showDeleteConfirmDialog = true
+                    }) {
+                        Icon(Icons.Filled.Delete, "Delete Game")
+                    }
+
+                    if (showDeleteConfirmDialog) {
+                        ShowDeleteAlert(
+                            onDismiss = { showDeleteConfirmDialog = false },
+                            onDelete = onClickDelete
+                        )
+                    }
+                }
             }
         }
         IconButton(onClick = { expanded = !expanded }) {
@@ -122,6 +152,25 @@ private fun GameCardContent(
     }
 }
 
+@Composable
+fun ShowDeleteAlert(
+    onDismiss: () -> Unit,
+    onDelete: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss ,
+        title = { Text(stringResource(id = R.string.confirm_delete)) },
+        text = { Text(stringResource(id = R.string.confirm_delete_message)) },
+        confirmButton = {
+            Button(
+                onClick = { onDelete() }
+            ) { Text("Yes") }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) { Text("No") }
+        }
+    )
+}
+
 @Preview
 @Composable
 fun DonationCardPreview() {
@@ -131,7 +180,8 @@ fun DonationCardPreview() {
             description = "Amazing",
             genre = "Action",
             rating = 10,
-            price = 60
+            price = 60,
+            onClickDelete = {  }
         )
     }
 }
