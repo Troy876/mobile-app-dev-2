@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun LibraryScreen(modifier: Modifier = Modifier,
+                  onClickGameDetails: (Int) -> Unit,
                   libraryViewModel: LibraryViewModel = hiltViewModel()
 ) {
     val games = libraryViewModel.uiGames.collectAsState().value
@@ -52,7 +53,12 @@ fun LibraryScreen(modifier: Modifier = Modifier,
                 }
             else
                 GameCardList(
-                    games = games
+                    games = games,
+                    onClickGameDetails = onClickGameDetails,
+                    onDeleteGame = {
+                            game: GameModel ->
+                                libraryViewModel.deleteGame(game)
+                    }
                 )
         }
     }
@@ -60,7 +66,7 @@ fun LibraryScreen(modifier: Modifier = Modifier,
 
 @Preview(showBackground = true)
 @Composable
-fun ReportScreenPreview() {
+fun LibraryScreenPreview() {
     WishfulgamesJPCTheme {
         PreviewLibraryScreen( modifier = Modifier,
             games = libraryList.toMutableStateList()
@@ -93,7 +99,9 @@ fun PreviewLibraryScreen(modifier: Modifier = Modifier,
                 }
             else
                 GameCardList(
-                    games = games
+                    games = games,
+                    onDeleteGame = {},
+                    onClickGameDetails = { }
                 )
         }
     }

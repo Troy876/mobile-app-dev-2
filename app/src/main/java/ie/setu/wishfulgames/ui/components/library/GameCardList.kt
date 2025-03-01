@@ -14,7 +14,9 @@ import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 @Composable
 internal fun GameCardList(
     games: List<GameModel>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDeleteGame: (GameModel) -> Unit,
+    onClickGameDetails: (Int) -> Unit
 ) {
     LazyColumn {
         items(
@@ -25,7 +27,9 @@ internal fun GameCardList(
                 description = game.description,
                 genre = game.genre,
                 rating = game.rating,
-                price = game.price
+                price = game.price,
+                onClickDelete = { onDeleteGame(game) },
+                onClickGameDetails = { onClickGameDetails(game.id) }
             )
         }
     }
@@ -37,6 +41,10 @@ internal fun GameCardList(
 @Composable
 fun GameCardListPreview() {
     WishfulgamesJPCTheme {
-        GameCardList(libraryList.toMutableStateList())
+        GameCardList(
+            libraryList.toMutableStateList(),
+            onDeleteGame = {},
+            onClickGameDetails = {}
+        )
     }
 }

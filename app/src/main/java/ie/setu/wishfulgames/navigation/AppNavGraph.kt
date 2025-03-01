@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ie.setu.wishfulgames.ui.screens.create.CreateScreen
+import ie.setu.wishfulgames.ui.screens.details.DetailsScreen
 import ie.setu.wishfulgames.ui.screens.library.LibraryScreen
 
 @Composable
@@ -25,7 +26,26 @@ fun NavHostProvider(
             CreateScreen(modifier = modifier)
         }
         composable(route = Library.route) {
-            LibraryScreen(modifier = modifier)
+            LibraryScreen(modifier = modifier,
+                onClickGameDetails = {
+                    gameId : Int ->
+                    navController.navigateToGameList(gameId)
+                })
+        }
+        composable(
+            route = Details.route,
+            arguments = Details.arguments
+        )
+        { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getInt(Details.idArg)
+            if (id != null) {
+                DetailsScreen()
+            }
         }
     }
 }
+
+private fun NavHostController.navigateToGameList(gameId: Int) {
+    this.navigate("details/$gameId")
+}
+
