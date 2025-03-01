@@ -14,8 +14,10 @@ constructor(private val gameDAO: GameDAO) {
     { gameDAO.insert(game) }
 
     suspend fun update(game: GameModel)
-    { gameDAO.update(game) }
+    { gameDAO.update(game.id,game.title,game.description,game.genre) }
 
     suspend fun delete(game: GameModel)
     { gameDAO.delete(game) }
+
+    fun get(id: Int) = gameDAO.get(id)
 }

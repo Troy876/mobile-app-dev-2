@@ -45,7 +45,8 @@ fun GameCard(
     genre: String,
     rating: Int,
     price: Int,
-    onClickDelete: () -> Unit
+    onClickDelete: () -> Unit,
+    onClickGameDetails: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -58,7 +59,8 @@ fun GameCard(
             genre,
             rating,
             price,
-            onClickDelete)
+            onClickDelete,
+            onClickGameDetails)
     }
 }
 
@@ -69,7 +71,8 @@ private fun GameCardContent(
     genre: String,
     rating: Int,
     price: Int,
-    onClickDelete: () -> Unit
+    onClickDelete: () -> Unit,
+    onClickGameDetails: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
@@ -120,7 +123,7 @@ private fun GameCardContent(
                 Text(modifier = Modifier.padding(vertical = 16.dp), text = description)
                 Row(modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween) {
-                    FilledTonalButton(onClick = {}) {
+                    FilledTonalButton(onClick = onClickGameDetails) {
                         Text(text = "Show More...")
                     }
 
@@ -173,7 +176,7 @@ fun ShowDeleteAlert(
 
 @Preview
 @Composable
-fun DonationCardPreview() {
+fun CreateCardPreview() {
     WishfulgamesJPCTheme {
         GameCard(
             title = "Game",
@@ -181,7 +184,8 @@ fun DonationCardPreview() {
             genre = "Action",
             rating = 10,
             price = 60,
-            onClickDelete = {  }
+            onClickDelete = {  },
+            onClickGameDetails = {  }
         )
     }
 }
