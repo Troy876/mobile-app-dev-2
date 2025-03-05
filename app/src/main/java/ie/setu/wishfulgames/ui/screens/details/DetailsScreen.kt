@@ -9,11 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -45,8 +42,56 @@ fun DetailsScreen(
     detailViewModel: DetailsViewModel = hiltViewModel()
 ) {
     var game = detailViewModel.game.value
-    var onMessageChanged by rememberSaveable { mutableStateOf(false) }
-    var text by rememberSaveable { mutableStateOf("") }
+    var onFieldChange by rememberSaveable { mutableStateOf(false) }
+    var titleText by rememberSaveable { mutableStateOf(game.title) }
+    var descriptionText by rememberSaveable { mutableStateOf(game.description) }
+    var genreText by rememberSaveable { mutableStateOf(game.genre) }
+    val errorEmpty = "Field cannot be empty..."
+    val errorShort = "Field must be at least 2 characters"
+    var isTitleEmpty by rememberSaveable { mutableStateOf(false) }
+    var isTitleShort by rememberSaveable { mutableStateOf(false) }
+    var isDescriptionEmpty by rememberSaveable { mutableStateOf(false) }
+    var isDescriptionShort by rememberSaveable { mutableStateOf(false) }
+    var isGenreEmpty by rememberSaveable { mutableStateOf(false) }
+    var isGenreShort by rememberSaveable { mutableStateOf(false) }
+
+    fun validateAllFields() {
+        val titleIsEmpty = titleText.trim().isEmpty()
+        val titleIsShort = titleText.length < 2
+        val descriptionIsEmpty = descriptionText.trim().isEmpty()
+        val descriptionIsShort = descriptionText.length < 2
+        val genreIsEmpty = genreText.trim().isEmpty()
+        val genreIsShort = genreText.length < 2
+
+        isTitleEmpty = titleIsEmpty
+        isTitleShort = titleIsShort
+        isDescriptionEmpty = descriptionIsEmpty
+        isDescriptionShort = descriptionIsShort
+        isGenreEmpty = genreIsEmpty
+        isGenreShort = genreIsShort
+
+        onFieldChange = !(titleIsEmpty || titleIsShort || descriptionIsEmpty || descriptionIsShort || genreIsEmpty || genreIsShort)
+    }
+
+    fun validate(text: String, field: String) {
+        val isEmpty = text.trim().isEmpty()
+        val isShort = text.length < 2
+        when (field) {
+            "title" -> {
+                isTitleEmpty = isEmpty
+                isTitleShort = isShort
+            }
+            "description" -> {
+                isDescriptionEmpty = isEmpty
+                isDescriptionShort = isShort
+            }
+            "genre" -> {
+                isGenreEmpty = isEmpty
+                isGenreShort = isShort
+            }
+        }
+        validateAllFields()
+    }
 
     Column(
         modifier = modifier.padding(
@@ -65,48 +110,95 @@ fun DetailsScreen(
                     end = 10.dp,
                 ),
         ) {
-            text = game.title
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = text,
+                value = titleText,
                 onValueChange = {
-                    text = it
-                    game.title = text
-                    onMessageChanged = true
+                    titleText = it
+                    validate(titleText, "title")
+                    game.title = titleText
                 },
+                maxLines = 2,
                 label = { Text(text = "Title") },
+                isError = isTitleEmpty || isTitleShort,
+                supportingText = {
+                    if (isTitleEmpty) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = errorEmpty,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    } else if (isTitleShort) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = errorShort,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
-            text = game.description
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = text,
+                value = descriptionText,
                 onValueChange = {
-                    text = it
-                    game.description = text
-                    onMessageChanged = true
+                    descriptionText = it
+                    validate(descriptionText, "description")
+                    game.description = descriptionText
                 },
+                maxLines = 2,
                 label = { Text(text = "Description") },
+                isError = isDescriptionEmpty || isDescriptionShort,
+                supportingText = {
+                    if (isDescriptionEmpty) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = errorEmpty,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    } else if (isDescriptionShort) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = errorShort,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
-            text = game.genre
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = text,
+                value = genreText,
                 onValueChange = {
-                    text = it
-                    game.genre = text
-                    onMessageChanged = true
+                    genreText = it
+                    validate(genreText, "genre")
+                    game.genre = genreText
                 },
+                maxLines = 2,
                 label = { Text(text = "Genre") },
+                isError = isGenreEmpty || isGenreShort,
+                supportingText = {
+                    if (isGenreEmpty) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = errorEmpty,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    } else if (isGenreShort) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = errorShort,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
-
             Spacer(modifier.height(height = 48.dp))
             Button(
                 onClick = {
                     detailViewModel.updateGame(game)
-                    onMessageChanged = false
+                    onFieldChange = false
                 },
                 elevation = ButtonDefaults.buttonElevation(20.dp),
-                enabled = onMessageChanged
+                enabled = onFieldChange
             ) {
                 Icon(Icons.Default.Save, contentDescription = "Save")
                 Spacer(modifier.width(width = 8.dp))
