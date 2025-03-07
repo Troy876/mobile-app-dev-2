@@ -55,24 +55,6 @@ fun DetailsScreen(
     var isGenreEmpty by rememberSaveable { mutableStateOf(false) }
     var isGenreShort by rememberSaveable { mutableStateOf(false) }
 
-    fun validateAllFields() {
-        val titleIsEmpty = titleText.trim().isEmpty()
-        val titleIsShort = titleText.length < 2
-        val descriptionIsEmpty = descriptionText.trim().isEmpty()
-        val descriptionIsShort = descriptionText.length < 2
-        val genreIsEmpty = genreText.trim().isEmpty()
-        val genreIsShort = genreText.length < 2
-
-        isTitleEmpty = titleIsEmpty
-        isTitleShort = titleIsShort
-        isDescriptionEmpty = descriptionIsEmpty
-        isDescriptionShort = descriptionIsShort
-        isGenreEmpty = genreIsEmpty
-        isGenreShort = genreIsShort
-
-        onFieldChange = !(titleIsEmpty || titleIsShort || descriptionIsEmpty || descriptionIsShort || genreIsEmpty || genreIsShort)
-    }
-
     fun validate(text: String, field: String) {
         val isEmpty = text.trim().isEmpty()
         val isShort = text.length < 2
@@ -90,7 +72,7 @@ fun DetailsScreen(
                 isGenreShort = isShort
             }
         }
-        validateAllFields()
+        onFieldChange = !(isTitleEmpty || isTitleShort || isDescriptionEmpty || isDescriptionShort || isGenreEmpty || isGenreShort)
     }
 
     Column(
