@@ -39,19 +39,18 @@ fun CreateButton(
     modifier: Modifier = Modifier,
     game: GameModel,
     createViewModel: CreateViewModel = hiltViewModel(),
-    libraryViewModel: LibraryViewModel = hiltViewModel()
+    libraryViewModel: LibraryViewModel = hiltViewModel(),
+    enabled: Boolean,
+    onClick: () -> Unit
 ) {
     val games = libraryViewModel.uiGames.collectAsState().value
     val context = LocalContext.current
 
     Row {
         Button(
-            onClick = {
-                createViewModel.insert(game)
-                Timber.i("Game info : $game")
-                Timber.i("Game library list info : ${games.toList()}")
-            },
-            elevation = ButtonDefaults.buttonElevation(20.dp)
+            onClick = onClick,
+            elevation = ButtonDefaults.buttonElevation(20.dp),
+            enabled = enabled
         ) {
             Icon(Icons.Default.Add, contentDescription = "Add")
             Spacer(modifier.width(width = 4.dp))

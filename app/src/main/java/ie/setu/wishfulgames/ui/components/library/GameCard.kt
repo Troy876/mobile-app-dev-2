@@ -106,14 +106,14 @@ private fun GameCardContent(
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = genre,
+                    text = "$rating/10",
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = "$rating/10",
+                    text = "€$price",
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.ExtraBold
                     )
@@ -121,6 +121,7 @@ private fun GameCardContent(
             }
             if (expanded) {
                 Text(modifier = Modifier.padding(vertical = 16.dp), text = description)
+                Text(modifier = Modifier.padding(vertical = 16.dp), text = genre)
                 Row(modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween) {
                     FilledTonalButton(onClick = onClickGameDetails) {
