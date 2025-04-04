@@ -46,7 +46,8 @@ fun GameCard(
     rating: Int,
     price: Int,
     onClickDelete: () -> Unit,
-    onClickGameDetails: () -> Unit
+    onClickGameDetails: () -> Unit,
+    onRefreshList: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -60,7 +61,8 @@ fun GameCard(
             rating,
             price,
             onClickDelete,
-            onClickGameDetails)
+            onClickGameDetails,
+            onRefreshList)
     }
 }
 
@@ -72,7 +74,8 @@ private fun GameCardContent(
     rating: Int,
     price: Int,
     onClickDelete: () -> Unit,
-    onClickGameDetails: () -> Unit
+    onClickGameDetails: () -> Unit,
+    onRefreshList: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
@@ -137,7 +140,8 @@ private fun GameCardContent(
                     if (showDeleteConfirmDialog) {
                         ShowDeleteAlert(
                             onDismiss = { showDeleteConfirmDialog = false },
-                            onDelete = onClickDelete
+                            onDelete = onClickDelete,
+                            onRefresh = onRefreshList
                         )
                     }
                 }
@@ -159,14 +163,18 @@ private fun GameCardContent(
 @Composable
 fun ShowDeleteAlert(
     onDismiss: () -> Unit,
-    onDelete: () -> Unit) {
+    onDelete: () -> Unit,
+    onRefresh: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = onDismiss ,
         title = { Text(stringResource(id = R.string.confirm_delete)) },
         text = { Text(stringResource(id = R.string.confirm_delete_message)) },
         confirmButton = {
             Button(
-                onClick = { onDelete() }
+                onClick = { onDelete()
+                            onRefresh()
+                    }
             ) { Text("Yes") }
         },
         dismissButton = {
@@ -186,7 +194,8 @@ fun CreateCardPreview() {
             rating = 10,
             price = 60,
             onClickDelete = {  },
-            onClickGameDetails = {  }
+            onClickGameDetails = {  },
+            onRefreshList = {  }
         )
     }
 }

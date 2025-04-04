@@ -1,5 +1,6 @@
 package ie.setu.wishfulgames.ui.components.create
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
@@ -16,6 +17,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -24,15 +26,15 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import ie.setu.wishfulgames.R
 import ie.setu.wishfulgames.data.GameModel
 import ie.setu.wishfulgames.data.libraryList
-import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
-import ie.setu.wishfulgames.R
+import ie.setu.wishfulgames.ui.components.general.ShowLoader
 import ie.setu.wishfulgames.ui.screens.create.CreateViewModel
-import timber.log.Timber
-import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.wishfulgames.ui.screens.library.LibraryViewModel
-import androidx.compose.ui.platform.LocalContext
+import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
+import timber.log.Timber
 
 @Composable
 fun CreateButton(
@@ -46,9 +48,17 @@ fun CreateButton(
     val games = libraryViewModel.uiGames.collectAsState().value
     val context = LocalContext.current
 
+    val isError = createViewModel.isErr.value
+    val error = createViewModel.error.value
+    val isLoading = createViewModel.isLoading.value
+
+    if(isLoading) ShowLoader("Trying to create...")
+
     Row {
         Button(
-            onClick = onClick,
+            onClick = {
+                createViewModel.insert(game)
+            },
             elevation = ButtonDefaults.buttonElevation(20.dp),
             enabled = enabled
         ) {
@@ -83,6 +93,11 @@ fun CreateButton(
                 }
             })
     }
+    if(isError)
+        Toast.makeText(context,"Unable to create at this time...",
+            Toast.LENGTH_SHORT).show()
+    else
+        libraryViewModel.getGames()
 }
 
 @Preview(showBackground = true)

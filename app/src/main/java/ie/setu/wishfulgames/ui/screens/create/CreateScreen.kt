@@ -40,7 +40,7 @@ fun CreateScreen(
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var genre by remember { mutableStateOf("") }
-    var rating by remember { mutableIntStateOf(0) }
+    var rating by remember { mutableIntStateOf(1) }
     var price by remember { mutableIntStateOf(10) }
     val scrollState = rememberScrollState()
     var onFieldChange by rememberSaveable { mutableStateOf(false) }
