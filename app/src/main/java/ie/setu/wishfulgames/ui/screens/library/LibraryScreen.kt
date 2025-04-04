@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
@@ -24,6 +25,9 @@ import ie.setu.wishfulgames.ui.components.library.GameCardList
 import ie.setu.wishfulgames.ui.components.library.LibraryHeader
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 import androidx.hilt.navigation.compose.hiltViewModel
+import ie.setu.wishfulgames.ui.components.general.ShowError
+import ie.setu.wishfulgames.ui.components.general.ShowRefreshList
+import ie.setu.wishfulgames.ui.components.general.ShowLoader
 
 @Composable
 fun LibraryScreen(modifier: Modifier = Modifier,
@@ -31,6 +35,13 @@ fun LibraryScreen(modifier: Modifier = Modifier,
                   libraryViewModel: LibraryViewModel = hiltViewModel()
 ) {
     val games = libraryViewModel.uiGames.collectAsState().value
+    val isError = libraryViewModel.isErr.value
+    val isLoading = libraryViewModel.isLoading.value
+    val error = libraryViewModel.error.value
+
+    LaunchedEffect(Unit) {
+        libraryViewModel.getGames()
+    }
 
     Column {
         Column(
@@ -40,8 +51,11 @@ fun LibraryScreen(modifier: Modifier = Modifier,
                 end = 24.dp
             ),
         ) {
+            if(isLoading) ShowLoader("Loading Games...")
             LibraryHeader()
-            if(games.isEmpty())
+            if(!isError)
+                ShowRefreshList(onClick = { libraryViewModel.getGames() })
+            if(games.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {
                     Text(color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.Bold,
@@ -51,15 +65,21 @@ fun LibraryScreen(modifier: Modifier = Modifier,
                         text = stringResource(R.string.empty_library)
                     )
                 }
-            else
+            if (!isError) {
                 GameCardList(
                     games = games,
                     onClickGameDetails = onClickGameDetails,
-                    onDeleteGame = {
-                            game: GameModel ->
-                                libraryViewModel.deleteGame(game)
+                    onDeleteGame = { game: GameModel ->
+                        libraryViewModel.deleteGame(game)
                     }
                 )
+            }
+
+            if (isError) {
+                ShowError(headline = error.message!! + " error...",
+                    subtitle = error.toString(),
+                    onClick = { libraryViewModel.getGames() })
+            }
         }
     }
 }
