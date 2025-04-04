@@ -30,4 +30,10 @@ constructor(private val repository: RetrofitRepository) : ViewModel() {
                 isLoading.value = false
             }
         }
+
+    fun deleteGame(game: GameModel) {
+        viewModelScope.launch {
+            repository.delete(game)
+        }
+    }
 }
