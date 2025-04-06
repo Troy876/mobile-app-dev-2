@@ -7,8 +7,8 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
-import ie.setu.wishfulgames.data.GameModel
-import ie.setu.wishfulgames.data.libraryList
+import ie.setu.wishfulgames.data.model.GameModel
+import ie.setu.wishfulgames.data.model.libraryList
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 
 @Composable
