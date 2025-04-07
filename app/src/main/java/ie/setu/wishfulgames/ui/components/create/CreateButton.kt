@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.wishfulgames.R
-import ie.setu.wishfulgames.data.GameModel
-import ie.setu.wishfulgames.data.libraryList
+import ie.setu.wishfulgames.data.model.GameModel
+import ie.setu.wishfulgames.data.model.libraryList
 import ie.setu.wishfulgames.ui.components.general.ShowLoader
 import ie.setu.wishfulgames.ui.screens.create.CreateViewModel
 import ie.setu.wishfulgames.ui.screens.library.LibraryViewModel
@@ -42,17 +42,10 @@ fun CreateButton(
     game: GameModel,
     createViewModel: CreateViewModel = hiltViewModel(),
     libraryViewModel: LibraryViewModel = hiltViewModel(),
-    enabled: Boolean,
-    onClick: () -> Unit
+    enabled: Boolean
 ) {
-    val games = libraryViewModel.uiGames.collectAsState().value
     val context = LocalContext.current
-
     val isError = createViewModel.isErr.value
-    val error = createViewModel.error.value
-    val isLoading = createViewModel.isLoading.value
-
-    if(isLoading) ShowLoader("Trying to create...")
 
     Row {
         Button(
@@ -83,7 +76,6 @@ fun CreateButton(
                     )
                 ) {}
 
-
                 withStyle(
                     style = SpanStyle(
                         fontWeight = FontWeight.Bold,
@@ -96,8 +88,6 @@ fun CreateButton(
     if(isError)
         Toast.makeText(context,"Unable to create at this time...",
             Toast.LENGTH_SHORT).show()
-    else
-        libraryViewModel.getGames()
 }
 
 @Preview(showBackground = true)
@@ -148,7 +138,6 @@ fun PreviewCreateButton(
                         color = Color.Black
                     )
                 ) {}
-
 
                 withStyle(
                     style = SpanStyle(

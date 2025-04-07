@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
@@ -17,31 +16,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import ie.setu.wishfulgames.R
-import ie.setu.wishfulgames.data.GameModel
-import ie.setu.wishfulgames.data.libraryList
+import ie.setu.wishfulgames.data.model.GameModel
+import ie.setu.wishfulgames.data.model.libraryList
 import ie.setu.wishfulgames.ui.components.general.Centre
+import ie.setu.wishfulgames.ui.components.general.ShowError
+import ie.setu.wishfulgames.ui.components.general.ShowLoader
 import ie.setu.wishfulgames.ui.components.library.GameCardList
 import ie.setu.wishfulgames.ui.components.library.LibraryHeader
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
-import androidx.hilt.navigation.compose.hiltViewModel
-import ie.setu.wishfulgames.ui.components.general.ShowError
-import ie.setu.wishfulgames.ui.components.general.ShowRefreshList
-import ie.setu.wishfulgames.ui.components.general.ShowLoader
 
 @Composable
 fun LibraryScreen(modifier: Modifier = Modifier,
-                  onClickGameDetails: (Int) -> Unit,
+                  onClickGameDetails: (String) -> Unit,
                   libraryViewModel: LibraryViewModel = hiltViewModel()
 ) {
     val games = libraryViewModel.uiGames.collectAsState().value
     val isError = libraryViewModel.isErr.value
     val isLoading = libraryViewModel.isLoading.value
     val error = libraryViewModel.error.value
-
-    LaunchedEffect(Unit) {
-        libraryViewModel.getGames()
-    }
 
     Column {
         Column(
@@ -53,8 +47,6 @@ fun LibraryScreen(modifier: Modifier = Modifier,
         ) {
             if(isLoading) ShowLoader("Loading Games...")
             LibraryHeader()
-            if(!isError)
-                ShowRefreshList(onClick = { libraryViewModel.getGames() })
             if(games.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {
                     Text(color = MaterialTheme.colorScheme.secondary,
@@ -121,7 +113,7 @@ fun PreviewLibraryScreen(modifier: Modifier = Modifier,
                 GameCardList(
                     games = games,
                     onDeleteGame = {},
-                    onClickGameDetails = { }
+                    onClickGameDetails = { },
                 )
         }
     }

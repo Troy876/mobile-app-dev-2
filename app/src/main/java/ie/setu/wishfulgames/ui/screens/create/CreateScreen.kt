@@ -21,8 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ie.setu.wishfulgames.data.GameModel
-import ie.setu.wishfulgames.data.libraryList
+import ie.setu.wishfulgames.data.model.GameModel
+import ie.setu.wishfulgames.data.model.libraryList
 import ie.setu.wishfulgames.ui.components.create.CreateButton
 import ie.setu.wishfulgames.ui.components.create.CreateHeader
 import ie.setu.wishfulgames.ui.components.create.PricePicker
@@ -207,17 +207,6 @@ fun CreateScreen(
                     price = price
                 ),
                 enabled = onFieldChange,
-                onClick = {
-                    createViewModel.insert(
-                        GameModel(
-                            title = title,
-                            description = description,
-                            genre = genre,
-                            rating = rating,
-                            price = price
-                        )
-                    )
-                }
             )
         }
     }
@@ -300,7 +289,6 @@ fun PreviewCreateScreen(modifier: Modifier = Modifier,
                     price = price
                 ),
                 enabled = true,
-                onClick = {}
             )
         }
     }

@@ -20,11 +20,13 @@ import androidx.navigation.compose.rememberNavController
 import ie.setu.wishfulgames.navigation.AppDestination
 import ie.setu.wishfulgames.navigation.bottomAppBarDestinations
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
+import kotlin.collections.get
 
 @Composable
 fun BottomAppBarProvider(
     navController: NavHostController,
-    currentScreen: AppDestination
+    currentScreen: AppDestination,
+    userDestinations: List<AppDestination>
 ) {
     var navigationSelectedItem by remember { mutableIntStateOf(0) }
 
@@ -32,7 +34,7 @@ fun BottomAppBarProvider(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onSecondary,
     ) {
-        bottomAppBarDestinations.forEachIndexed { index, navigationItem ->
+        userDestinations.forEachIndexed { index, navigationItem ->
             NavigationBarItem(
                 selected = navigationItem == currentScreen,
                 colors = NavigationBarItemDefaults.colors(
@@ -71,7 +73,8 @@ fun BottomAppBarScreenPreview() {
     WishfulgamesJPCTheme {
         BottomAppBarProvider(
             rememberNavController(),
-            bottomAppBarDestinations[1]
+            bottomAppBarDestinations.get(1),
+            bottomAppBarDestinations
         )
     }
 }

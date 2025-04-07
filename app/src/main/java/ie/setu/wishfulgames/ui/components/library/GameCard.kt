@@ -47,7 +47,6 @@ fun GameCard(
     price: Int,
     onClickDelete: () -> Unit,
     onClickGameDetails: () -> Unit,
-    onRefreshList: () -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -61,8 +60,7 @@ fun GameCard(
             rating,
             price,
             onClickDelete,
-            onClickGameDetails,
-            onRefreshList)
+            onClickGameDetails)
     }
 }
 
@@ -74,8 +72,7 @@ private fun GameCardContent(
     rating: Int,
     price: Int,
     onClickDelete: () -> Unit,
-    onClickGameDetails: () -> Unit,
-    onRefreshList: () -> Unit
+    onClickGameDetails: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
@@ -141,7 +138,6 @@ private fun GameCardContent(
                         ShowDeleteAlert(
                             onDismiss = { showDeleteConfirmDialog = false },
                             onDelete = onClickDelete,
-                            onRefresh = onRefreshList
                         )
                     }
                 }
@@ -164,7 +160,6 @@ private fun GameCardContent(
 fun ShowDeleteAlert(
     onDismiss: () -> Unit,
     onDelete: () -> Unit,
-    onRefresh: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss ,
@@ -173,7 +168,6 @@ fun ShowDeleteAlert(
         confirmButton = {
             Button(
                 onClick = { onDelete()
-                            onRefresh()
                     }
             ) { Text("Yes") }
         },
@@ -194,8 +188,7 @@ fun CreateCardPreview() {
             rating = 10,
             price = 60,
             onClickDelete = {  },
-            onClickGameDetails = {  },
-            onRefreshList = {  }
+            onClickGameDetails = {  }
         )
     }
 }

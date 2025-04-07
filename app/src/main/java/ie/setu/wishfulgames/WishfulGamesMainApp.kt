@@ -1,6 +1,8 @@
-package ie.setu.wishfulgames.main
+package ie.setu.wishfulgames
 
 import android.app.Application
+import com.google.firebase.Firebase
+import com.google.firebase.initialize
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -9,6 +11,7 @@ class WishfulGamesMainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        Timber.i("Starting WishfulGames Application")
+        Timber.i("Starting Wishfulgames App")
+        Firebase.initialize(context = this)
     }
 }
