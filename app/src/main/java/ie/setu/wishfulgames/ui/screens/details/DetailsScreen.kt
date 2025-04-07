@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ie.setu.wishfulgames.data.GameModel
+import ie.setu.wishfulgames.data.model.GameModel
 import ie.setu.wishfulgames.ui.components.details.DetailsScreenText
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 

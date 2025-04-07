@@ -4,8 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ie.setu.wishfulgames.data.GameModel
+import ie.setu.wishfulgames.data.model.GameModel
 import ie.setu.wishfulgames.data.api.RetrofitRepository
+import ie.setu.wishfulgames.firebase.services.AuthService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,9 @@ import timber.log.Timber
 
 @HiltViewModel
 class LibraryViewModel @Inject
-constructor(private val repository: RetrofitRepository) : ViewModel() {
+constructor(private val repository: RetrofitRepository,
+            private val authService: AuthService
+) : ViewModel() {
     private val _games
             = MutableStateFlow<List<GameModel>>(emptyList())
     val uiGames: StateFlow<List<GameModel>>
@@ -30,7 +33,7 @@ constructor(private val repository: RetrofitRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                _games.value = repository.getAll()
+                _games.value = repository.getAll(authService.email!!)
                 isErr.value = false
                 isLoading.value = false
             }
@@ -43,8 +46,8 @@ constructor(private val repository: RetrofitRepository) : ViewModel() {
         }
     }
 
-    fun deleteGame(game: GameModel) {
-        viewModelScope.launch {
-        }
+    fun deleteGame(game: GameModel)
+            = viewModelScope.launch {
+        repository.delete(authService.email!!,game)
     }
 }

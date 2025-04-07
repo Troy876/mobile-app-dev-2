@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ie.setu.wishfulgames.data.GameModel
+import ie.setu.wishfulgames.data.model.GameModel
 import ie.setu.wishfulgames.data.repository.RoomRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -4,15 +4,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ie.setu.wishfulgames.data.GameModel
 import ie.setu.wishfulgames.data.api.RetrofitRepository
+import ie.setu.wishfulgames.data.model.GameModel
+import ie.setu.wishfulgames.firebase.services.AuthService
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateViewModel @Inject
-constructor(private val repository: RetrofitRepository) : ViewModel() {
-
+constructor(private val repository: RetrofitRepository,
+            private val authService: AuthService) : ViewModel() {
     var isErr = mutableStateOf(false)
     var error = mutableStateOf(Exception())
     var isLoading = mutableStateOf(false)
@@ -21,7 +22,7 @@ constructor(private val repository: RetrofitRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                repository.insert(game)
+                repository.insert(authService.email!!, game)
                 isErr.value = false
                 isLoading.value = false
             } catch (e: Exception) {
@@ -30,10 +31,4 @@ constructor(private val repository: RetrofitRepository) : ViewModel() {
                 isLoading.value = false
             }
         }
-
-    fun deleteGame(game: GameModel) {
-        viewModelScope.launch {
-            repository.delete(game)
-        }
-    }
 }

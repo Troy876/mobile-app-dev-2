@@ -18,8 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ie.setu.wishfulgames.R
-import ie.setu.wishfulgames.data.GameModel
-import ie.setu.wishfulgames.data.libraryList
+import ie.setu.wishfulgames.data.model.GameModel
+import ie.setu.wishfulgames.data.model.libraryList
 import ie.setu.wishfulgames.ui.components.general.Centre
 import ie.setu.wishfulgames.ui.components.library.GameCardList
 import ie.setu.wishfulgames.ui.components.library.LibraryHeader
@@ -71,7 +71,8 @@ fun LibraryScreen(modifier: Modifier = Modifier,
                     onClickGameDetails = onClickGameDetails,
                     onDeleteGame = { game: GameModel ->
                         libraryViewModel.deleteGame(game)
-                    }
+                    },
+                    onRefreshList = { libraryViewModel.getGames() }
                 )
             }
 
@@ -121,7 +122,8 @@ fun PreviewLibraryScreen(modifier: Modifier = Modifier,
                 GameCardList(
                     games = games,
                     onDeleteGame = {},
-                    onClickGameDetails = { }
+                    onClickGameDetails = { },
+                    onRefreshList = {}
                 )
         }
     }
