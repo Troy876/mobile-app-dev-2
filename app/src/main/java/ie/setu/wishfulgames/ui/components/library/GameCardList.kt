@@ -16,8 +16,7 @@ internal fun GameCardList(
     games: List<GameModel>,
     modifier: Modifier = Modifier,
     onDeleteGame: (GameModel) -> Unit,
-    onClickGameDetails: (Int) -> Unit,
-    onRefreshList: () -> Unit
+    onClickGameDetails: (String) -> Unit,
 ) {
     LazyColumn {
         items(
@@ -31,8 +30,7 @@ internal fun GameCardList(
                 rating = game.rating,
                 price = game.price,
                 onClickDelete = { onDeleteGame(game) },
-                onClickGameDetails = { onClickGameDetails(game.id) },
-                onRefreshList = onRefreshList
+                onClickGameDetails = { onClickGameDetails(game._id) }
             )
         }
     }
@@ -48,7 +46,6 @@ fun GameCardListPreview() {
             libraryList.toMutableStateList(),
             onDeleteGame = {},
             onClickGameDetails = {},
-            onRefreshList = { }
         )
     }
 }

@@ -46,9 +46,6 @@ fun CreateButton(
 ) {
     val context = LocalContext.current
     val isError = createViewModel.isErr.value
-    val isLoading = createViewModel.isLoading.value
-
-    if(isLoading) ShowLoader("Trying to create...")
 
     Row {
         Button(
@@ -91,8 +88,6 @@ fun CreateButton(
     if(isError)
         Toast.makeText(context,"Unable to create at this time...",
             Toast.LENGTH_SHORT).show()
-    else
-        libraryViewModel.getGames()
 }
 
 @Preview(showBackground = true)

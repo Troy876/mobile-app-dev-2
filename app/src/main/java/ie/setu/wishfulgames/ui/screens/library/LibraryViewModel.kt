@@ -5,18 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ie.setu.wishfulgames.data.model.GameModel
-import ie.setu.wishfulgames.data.api.RetrofitRepository
 import ie.setu.wishfulgames.firebase.services.AuthService
+import ie.setu.wishfulgames.firebase.services.FirestoreService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class LibraryViewModel @Inject
-constructor(private val repository: RetrofitRepository,
+constructor(private val repository: FirestoreService,
             private val authService: AuthService
 ) : ViewModel() {
     private val _games
@@ -33,9 +33,12 @@ constructor(private val repository: RetrofitRepository,
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                _games.value = repository.getAll(authService.email!!)
-                isErr.value = false
-                isLoading.value = false
+                repository.getAll(authService.email!!).collect{ items ->
+                    _games.value = items
+                    isErr.value = false
+                    isLoading.value = false
+                }
+                Timber.i("DVM RVM = : ${_games.value}")
             }
             catch(e:Exception) {
                 isErr.value = true
@@ -48,6 +51,6 @@ constructor(private val repository: RetrofitRepository,
 
     fun deleteGame(game: GameModel)
             = viewModelScope.launch {
-        repository.delete(authService.email!!,game)
+        repository.delete(authService.email!!,game._id)
     }
 }

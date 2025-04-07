@@ -33,9 +33,10 @@ fun NavHostProvider(
         composable(route = Library.route) {
             LibraryScreen(modifier = modifier,
                 onClickGameDetails = {
-                    gameId : Int ->
+                    gameId : String ->
                     navController.navigateToGameList(gameId)
-                })
+                },
+            )
         }
         composable(route = Home.route) {
             HomeScreen(modifier = modifier)
@@ -75,6 +76,6 @@ fun NavHostProvider(
     }
 }
 
-private fun NavHostController.navigateToGameList(gameId: Int) {
+private fun NavHostController.navigateToGameList(gameId: String) {
     this.navigate("details/$gameId")
 }

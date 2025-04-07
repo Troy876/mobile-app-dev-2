@@ -6,28 +6,51 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ie.setu.wishfulgames.data.model.GameModel
-import ie.setu.wishfulgames.data.repository.RoomRepository
+import ie.setu.wishfulgames.firebase.services.AuthService
+import ie.setu.wishfulgames.firebase.services.FirestoreService
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject
-constructor(private val repository: RoomRepository,
+constructor(private val repository: FirestoreService,
+            private val authService: AuthService,
             savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     var game = mutableStateOf(GameModel())
-    val id: Int = checkNotNull(savedStateHandle["id"])
+    val id: String = checkNotNull(savedStateHandle["id"])
+    var isErr = mutableStateOf(false)
+    var error = mutableStateOf(Exception())
+    var isLoading = mutableStateOf(false)
 
     init {
         viewModelScope.launch {
-            repository.get(id).collect { objGame ->
-                game.value = objGame
+            try {
+                isLoading.value = true
+                game.value = repository.get(authService.email!!,id)!!
+                isErr.value = false
+                isLoading.value = false
+            } catch (e: Exception) {
+                isErr.value = true
+                error.value = e
+                isLoading.value = false
             }
         }
     }
 
     fun updateGame(game: GameModel) {
-        viewModelScope.launch { repository.update(game) }
+        viewModelScope.launch {
+            try {
+                isLoading.value = true
+                repository.update(authService.email!!,game)
+                isErr.value = false
+                isLoading.value = false
+            } catch (e: Exception) {
+                isErr.value = true
+                error.value = e
+                isLoading.value = false
+            }
+        }
     }
 }
