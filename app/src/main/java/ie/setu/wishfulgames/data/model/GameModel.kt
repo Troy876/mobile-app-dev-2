@@ -11,7 +11,9 @@ data class GameModel(@DocumentId var _id : String = "N/A",
                      var genre : String = "N/A",
                      var rating : Int = 0,
                      var price : Int = 0,
-                     var email: String = "joe@bloggs.com")
+                     var email: String = "joe@bloggs.com",
+                     // var imageUri: String = ""
+    )
 
 val libraryList = List(30) { _ ->
     GameModel()

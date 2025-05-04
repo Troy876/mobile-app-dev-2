@@ -1,5 +1,6 @@
 package ie.setu.wishfulgames.firebase.database
 
+import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
@@ -10,6 +11,7 @@ import ie.setu.wishfulgames.firebase.services.FirestoreService
 import ie.setu.wishfulgames.firebase.services.Game
 import ie.setu.wishfulgames.firebase.services.Games
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import javax.inject.Inject
 
 class FirestoreRepository
@@ -41,6 +43,18 @@ class FirestoreRepository
 
     }
 
+//    override suspend fun insert(email: String, game: Game) {
+//        val gameWithEmailAndImage =
+//            game.copy(
+//                email = email,
+//                imageUri = auth.customPhotoUri!!.toString()
+//            )
+//
+//        firestore.collection(GAME_COLLECTION)
+//            .add(gameWithEmailAndImage)
+//            .await()
+//    }
+
     override suspend fun update(email: String,
                                 game: Game) {
         val gameUpdate =
@@ -57,4 +71,22 @@ class FirestoreRepository
             .document(gameId)
             .delete().await()
     }
+
+//    override suspend fun updatePhotoUris(email: String, uri: Uri) {
+//
+//        firestore.collection(GAME_COLLECTION)
+//            .whereEqualTo(USER_EMAIL, email)
+//            .get()
+//            .addOnSuccessListener { documents ->
+//                for (document in documents) {
+//                    Timber.i("FSR Updating ID ${document.id}")
+//                    firestore.collection(GAME_COLLECTION)
+//                        .document(document.id)
+//                        .update("imageUri", uri.toString())
+//                }
+//            }
+//            .addOnFailureListener { exception ->
+//                Timber.i("Error $exception")
+//            }
+//    }
 }

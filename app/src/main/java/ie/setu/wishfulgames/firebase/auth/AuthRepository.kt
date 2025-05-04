@@ -12,10 +12,13 @@ import ie.setu.wishfulgames.firebase.services.SignInWithGoogleResponse
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import androidx.core.net.toUri
+import ie.setu.wishfulgames.firebase.services.StorageService
+import timber.log.Timber
 
 class AuthRepository
-@Inject constructor(private val firebaseAuth: FirebaseAuth)
-    : AuthService {
+@Inject constructor(private val firebaseAuth: FirebaseAuth,
+                    // private val storageService: StorageService
+) : AuthService {
 
     override val currentUserId: String
         get() = firebaseAuth.currentUser?.uid.orEmpty()
@@ -49,6 +52,7 @@ class AuthRepository
                 .Builder()
                 .setDisplayName(name)
                 .setPhotoUri(uri)
+                // .setPhotoUri(uploadCustomPhotoUri(uri))
                 .build())?.await()
             return Response.Success(result.user!!)
         } catch (e: Exception) {
@@ -93,6 +97,7 @@ class AuthRepository
             currentUser!!.updateProfile(UserProfileChangeRequest
                 .Builder()
                 .setPhotoUri(uri)
+                // .setPhotoUri(uploadCustomPhotoUri(uri))
                 .build()).await()
             return Response.Success(currentUser!!)
         } catch (e: Exception) {
@@ -100,4 +105,17 @@ class AuthRepository
             Response.Failure(e)
         }
     }
+
+//    private suspend fun uploadCustomPhotoUri(uri: Uri) : Uri {
+//        if (uri.toString().isNotEmpty()) {
+//            val urlTask = storageService.uploadFile(uri = uri, "images")
+//            val url = urlTask.addOnCompleteListener { task ->
+//                if (!task.isSuccessful) {
+//                    Timber.e("task not successful: ${task.exception}")
+//                }
+//            }.await()
+//            return url
+//        }
+//        return Uri.EMPTY
+//    }
 }

@@ -1,5 +1,6 @@
 package ie.setu.wishfulgames.ui.components.library
 
+import android.net.Uri
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -30,7 +31,9 @@ internal fun GameCardList(
                 rating = game.rating,
                 price = game.price,
                 onClickDelete = { onDeleteGame(game) },
-                onClickGameDetails = { onClickGameDetails(game._id) }
+                onClickGameDetails = { onClickGameDetails(game._id)
+                // photoUri = Uri.parse(donation.imageUri)
+                }
             )
         }
     }

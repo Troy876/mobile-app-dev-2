@@ -88,4 +88,5 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.coil.compose)
+    implementation(libs.firebase.storage)
 }
