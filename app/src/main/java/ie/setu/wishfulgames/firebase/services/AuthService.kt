@@ -13,6 +13,7 @@ interface AuthService {
     val currentUser: FirebaseUser?
     val isUserAuthenticatedInFirebase: Boolean
     val email: String?
+    val customPhotoUri: Uri?
 
     suspend fun authenticateUser(email: String, password: String)
             : FirebaseSignInResponse
@@ -21,4 +22,5 @@ interface AuthService {
     suspend fun signOut()
     suspend fun authenticateGoogleUser(googleIdToken: String): FirebaseSignInResponse
     suspend fun firebaseSignInWithGoogle(googleCredential: AuthCredential): SignInWithGoogleResponse
+    suspend fun updatePhoto(uri: Uri) : FirebaseSignInResponse
 }

@@ -87,4 +87,5 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.coil.compose)
 }
