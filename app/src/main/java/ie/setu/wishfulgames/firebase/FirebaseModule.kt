@@ -1,5 +1,10 @@
 package ie.setu.wishfulgames.firebase
 
+import android.app.Application
+import android.content.Context
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -8,11 +13,13 @@ import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ie.setu.wishfulgames.firebase.auth.AuthRepository
 import ie.setu.wishfulgames.firebase.database.FirestoreRepository
 import ie.setu.wishfulgames.firebase.services.AuthService
 import ie.setu.wishfulgames.firebase.services.FirestoreService
+import ie.setu.wishfulgames.R
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,8 +29,10 @@ object FirebaseModule {
     fun provideFirebaseAuth(): FirebaseAuth = Firebase.auth
 
     @Provides
-    fun provideAuthRepository(auth: FirebaseAuth):
-            AuthService = AuthRepository(firebaseAuth = auth)
+    fun provideAuthRepository(
+        auth: FirebaseAuth
+    ): AuthService = AuthRepository(
+        firebaseAuth = auth)
 
     @Provides
     fun provideFirebaseFirestore()
@@ -37,4 +46,25 @@ object FirebaseModule {
         auth = auth,
         firestore = firebaseFirestore
     )
+
+    @Provides
+    fun provideCredentialManager(
+        @ApplicationContext
+        context: Context
+    ) = CredentialManager.create(context)
+
+    @Provides
+    fun provideGoogleIdOptions(
+        app: Application
+    ) = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(false)
+        .setServerClientId(app.getString(R.string.web_client_id))
+        .build()
+
+    @Provides
+    fun getCredentialRequest(
+        googleIdOption: GetGoogleIdOption
+    ) = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOption)
+        .build()
 }

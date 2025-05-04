@@ -31,6 +31,7 @@ import ie.setu.wishfulgames.firebase.auth.Response
 import ie.setu.wishfulgames.navigation.Home
 import ie.setu.wishfulgames.navigation.Login
 import ie.setu.wishfulgames.ui.components.general.ButtonComponent
+import ie.setu.wishfulgames.ui.components.general.GoogleSignInButtonComponent
 import ie.setu.wishfulgames.ui.components.general.HeadingTextComponent
 import ie.setu.wishfulgames.ui.components.general.MyTextFieldComponent
 import ie.setu.wishfulgames.ui.components.general.PasswordTextFieldComponent
@@ -95,6 +96,12 @@ fun LoginScreen(
                     isEnabled = loginViewModel.allValidationsPassed.value
                 )
                 isEnabled = loginViewModel.allValidationsPassed.value
+
+                Spacer(modifier = Modifier.height(10.dp))
+                val context = LocalContext.current
+                GoogleSignInButtonComponent {
+                    loginViewModel.signInWithGoogleCredentials(context)
+                }
             }
         }
     }
@@ -185,6 +192,8 @@ fun PreviewLoginScreen() {
                     isEnabled = false
                 )
                 Spacer(modifier = Modifier.height(10.dp))
+                GoogleSignInButtonComponent {
+                }
             }
         }
 

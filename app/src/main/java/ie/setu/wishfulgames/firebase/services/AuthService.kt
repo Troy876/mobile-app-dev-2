@@ -1,9 +1,12 @@
 package ie.setu.wishfulgames.firebase.services
 
+import android.net.Uri
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import ie.setu.wishfulgames.firebase.auth.Response
 
 typealias FirebaseSignInResponse = Response<FirebaseUser>
+typealias SignInWithGoogleResponse = Response<Boolean>
 
 interface AuthService {
     val currentUserId: String
@@ -16,4 +19,6 @@ interface AuthService {
     suspend fun createUser(name: String, email: String, password: String)
             : FirebaseSignInResponse
     suspend fun signOut()
+    suspend fun authenticateGoogleUser(googleIdToken: String): FirebaseSignInResponse
+    suspend fun firebaseSignInWithGoogle(googleCredential: AuthCredential): SignInWithGoogleResponse
 }

@@ -86,4 +86,5 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.gson)
     implementation(libs.play.services.auth)
+    implementation(libs.googleid)
 }

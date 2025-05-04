@@ -1,10 +1,13 @@
 package ie.setu.wishfulgames.firebase.auth
 
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import ie.setu.wishfulgames.firebase.services.AuthService
 import ie.setu.wishfulgames.firebase.services.FirebaseSignInResponse
+import ie.setu.wishfulgames.firebase.services.SignInWithGoogleResponse
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -51,5 +54,30 @@ class AuthRepository
     }
     override suspend fun signOut() {
         firebaseAuth.signOut()
+    }
+
+    override suspend fun authenticateGoogleUser(googleIdToken: String) : FirebaseSignInResponse {
+        return try {
+            val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
+            val result = firebaseAuth.signInWithCredential(firebaseCredential).await()
+            Response.Success(result.user!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun firebaseSignInWithGoogle(
+        googleCredential: AuthCredential
+    ): SignInWithGoogleResponse {
+        return try {
+            val authResult = firebaseAuth.signInWithCredential(googleCredential).await()
+            val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
+            if (isNewUser) {
+            }
+            Response.Success(true)
+        } catch (e: Exception) {
+            Response.Failure(e)
+        }
     }
 }

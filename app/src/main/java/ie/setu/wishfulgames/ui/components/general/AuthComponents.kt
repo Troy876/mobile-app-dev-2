@@ -1,5 +1,6 @@
 package ie.setu.wishfulgames.ui.components.general
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -58,8 +60,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ie.setu.wishfulgames.R
+import ie.setu.wishfulgames.data.rules.Constants.SIGN_IN_WITH_GOOGLE
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 import ie.setu.wishfulgames.ui.theme.endGradientColor
+import ie.setu.wishfulgames.ui.theme.gEndGradientColor
+import ie.setu.wishfulgames.ui.theme.gStartGradientColor
 import ie.setu.wishfulgames.ui.theme.startGradientColor
 
 @Preview
@@ -402,4 +407,55 @@ fun AppToolbar(
             }
         }
     )
+}
+
+@Composable
+fun GoogleSignInButtonComponent(onButtonClicked: () -> Unit) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(48.dp),
+        onClick = {
+            onButtonClicked.invoke()
+        },
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(Color.Transparent),
+        shape = RoundedCornerShape(50.dp),
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(48.dp)
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            gStartGradientColor,
+                            gEndGradientColor,
+                        )
+                    ),
+                    shape = RoundedCornerShape(50.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Row {
+                Column {
+                    Image(
+                        modifier = Modifier.padding(end = 40.dp),
+                        painter = painterResource(
+                            id = R.drawable.ic_google_logo
+                        ),
+                        contentDescription = null
+                    )
+                }
+                Text(
+                    text = SIGN_IN_WITH_GOOGLE,
+                    fontSize = 18.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Italic,
+                    modifier = Modifier.padding(end = 40.dp)
+                )
+            }
+        }
+    }
 }
