@@ -1,5 +1,6 @@
 package ie.setu.wishfulgames.ui.components.library
 
+import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -47,6 +48,7 @@ fun GameCard(
     price: Int,
     onClickDelete: () -> Unit,
     onClickGameDetails: () -> Unit,
+    // photoUri: Uri
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -72,7 +74,8 @@ private fun GameCardContent(
     rating: Int,
     price: Int,
     onClickDelete: () -> Unit,
-    onClickGameDetails: () -> Unit
+    onClickGameDetails: () -> Unit,
+    // photoUri: Uri
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
@@ -152,6 +155,18 @@ private fun GameCardContent(
                     stringResource(R.string.show_more)
                 }
             )
+
+//            AsyncImage(
+//                model = ImageRequest.Builder(LocalContext.current)
+//                    .data(photoUri)
+//                    .crossfade(true)
+//                    .build(),
+//                contentDescription = null,
+//                contentScale = ContentScale.Crop,
+//                modifier = Modifier
+//                    .size(50.dp)
+//                    .clip(CircleShape)
+//            )
         }
     }
 }

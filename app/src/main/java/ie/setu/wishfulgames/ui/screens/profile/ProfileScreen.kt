@@ -1,5 +1,6 @@
 package ie.setu.wishfulgames.ui.screens.profile
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +11,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,6 +23,8 @@ import ie.setu.wishfulgames.R
 import ie.setu.wishfulgames.ui.components.general.HeadingTextComponent
 import ie.setu.wishfulgames.ui.screens.login.LoginViewModel
 import ie.setu.wishfulgames.ui.screens.register.RegisterViewModel
+import ie.setu.wishfulgames.ui.components.general.ShowPhotoPicker
+import androidx.compose.runtime.setValue
 
 @Composable
 fun ProfileScreen(
@@ -28,7 +33,7 @@ fun ProfileScreen(
     loginViewModel: LoginViewModel = hiltViewModel(),
     registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
-
+    var photoUri: Uri? by remember { mutableStateOf(profileViewModel.photoUri) }
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,11 +41,19 @@ fun ProfileScreen(
     ) {
         HeadingTextComponent(value = stringResource(id = R.string.account_settings))
         Spacer(modifier = Modifier.height(10.dp))
-        BasicContent(
-            displayName = profileViewModel.displayName,
-            email = profileViewModel.email
-        )
 
+        if(photoUri.toString().isNotEmpty())
+            ProfileContent(
+                photoUri = photoUri,
+                displayName = profileViewModel.displayName,
+                email = profileViewModel.email
+            )
+        ShowPhotoPicker(
+            onPhotoUriChanged = {
+                photoUri = it
+                profileViewModel.updatePhotoUri(photoUri!!)
+            }
+        )
         Button(
             onClick = {
                 profileViewModel.signOut()
@@ -49,11 +62,10 @@ fun ProfileScreen(
                 registerViewModel.resetRegisterFlow()
             },
             colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = MaterialTheme.colorScheme.tertiary
+                containerColor = MaterialTheme.colorScheme.primary
             ),
         ) {
             Text(text = "Logout")
         }
-    }
-}
+    }}
+

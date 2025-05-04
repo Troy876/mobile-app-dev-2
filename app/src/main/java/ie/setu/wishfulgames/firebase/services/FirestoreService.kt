@@ -1,5 +1,6 @@
 package ie.setu.wishfulgames.firebase.services
 
+import android.net.Uri
 import ie.setu.wishfulgames.data.model.GameModel
 import kotlinx.coroutines.flow.Flow
 
@@ -13,4 +14,5 @@ interface FirestoreService {
     suspend fun insert(email: String, game: Game)
     suspend fun update(email: String, game: Game)
     suspend fun delete(email: String, gameId: String)
+    // suspend fun updatePhotoUris(email: String, uri: Uri)
 }
