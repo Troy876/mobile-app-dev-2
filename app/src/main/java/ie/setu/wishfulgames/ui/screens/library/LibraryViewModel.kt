@@ -10,6 +10,7 @@ import ie.setu.wishfulgames.firebase.services.FirestoreService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,10 +20,9 @@ class LibraryViewModel @Inject
 constructor(private val repository: FirestoreService,
             private val authService: AuthService
 ) : ViewModel() {
-    private val _games
-            = MutableStateFlow<List<GameModel>>(emptyList())
-    val uiGames: StateFlow<List<GameModel>>
-            = _games.asStateFlow()
+    private val _games = MutableStateFlow<List<GameModel>>(emptyList())
+    private val _uiGames = MutableStateFlow<List<GameModel>>(emptyList())
+    val uiGames: StateFlow<List<GameModel>> = _uiGames.asStateFlow()
     var isErr = mutableStateOf(false)
     var isLoading = mutableStateOf(false)
     var error = mutableStateOf(Exception())
@@ -35,12 +35,12 @@ constructor(private val repository: FirestoreService,
                 isLoading.value = true
                 repository.getAll(authService.email!!).collect{ items ->
                     _games.value = items
+                    _uiGames.value = items
                     isErr.value = false
                     isLoading.value = false
                 }
-                Timber.i("DVM RVM = : ${_games.value}")
-            }
-            catch(e:Exception) {
+                Timber.i("DVM RVM = : ${_uiGames.value}")
+            } catch (e: Exception) {
                 isErr.value = true
                 isLoading.value = false
                 error.value = e
@@ -52,5 +52,14 @@ constructor(private val repository: FirestoreService,
     fun deleteGame(game: GameModel)
             = viewModelScope.launch {
         repository.delete(authService.email!!,game._id)
+    }
+
+    fun searchGames(query: String) {
+        val filteredList = _games.value.filter {
+            it.title.contains(query, ignoreCase = true) ||
+                    it.description.contains(query, ignoreCase = true) ||
+                    it.genre.contains(query, ignoreCase = true)
+        }
+        _uiGames.value = filteredList
     }
 }

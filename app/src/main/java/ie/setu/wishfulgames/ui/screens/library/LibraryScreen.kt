@@ -2,11 +2,21 @@ package ie.setu.wishfulgames.ui.screens.library
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
@@ -27,15 +37,17 @@ import ie.setu.wishfulgames.ui.components.library.GameCardList
 import ie.setu.wishfulgames.ui.components.library.LibraryHeader
 import ie.setu.wishfulgames.ui.theme.WishfulgamesJPCTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(modifier: Modifier = Modifier,
                   onClickGameDetails: (String) -> Unit,
                   libraryViewModel: LibraryViewModel = hiltViewModel()
 ) {
-    val games = libraryViewModel.uiGames.collectAsState().value
-    val isError = libraryViewModel.isErr.value
-    val isLoading = libraryViewModel.isLoading.value
-    val error = libraryViewModel.error.value
+    val games by libraryViewModel.uiGames.collectAsState()
+    val isError by libraryViewModel.isErr
+    val isLoading by libraryViewModel.isLoading
+    val error by libraryViewModel.error
+    var searchQuery by remember { mutableStateOf("") }
 
     Column {
         Column(
@@ -45,8 +57,21 @@ fun LibraryScreen(modifier: Modifier = Modifier,
                 end = 24.dp
             ),
         ) {
-            if(isLoading) ShowLoader("Loading Games...")
             LibraryHeader()
+            TextField(
+                value = searchQuery,
+                onValueChange = {
+                    searchQuery = it
+                    libraryViewModel.searchGames(it)
+                },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
+                label = { Text("Search Games") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
+
+            if (isLoading) ShowLoader("Loading Games...")
             if(games.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {
                     Text(color = MaterialTheme.colorScheme.secondary,
@@ -99,6 +124,16 @@ fun PreviewLibraryScreen(modifier: Modifier = Modifier,
             ),
         ) {
             LibraryHeader()
+            val searchQuery = remember { mutableStateOf("") }
+            TextField(
+                value = searchQuery.value,
+                onValueChange = { searchQuery.value = it },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
+                label = { Text("Search Games") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
             if(games.isEmpty())
                 Centre(Modifier.fillMaxSize()) {
                     Text(color = MaterialTheme.colorScheme.secondary,
