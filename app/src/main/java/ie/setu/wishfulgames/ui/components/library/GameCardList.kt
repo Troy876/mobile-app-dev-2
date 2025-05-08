@@ -32,7 +32,7 @@ internal fun GameCardList(
                 price = game.price,
                 onClickDelete = { onDeleteGame(game) },
                 onClickGameDetails = { onClickGameDetails(game._id)
-                // photoUri = Uri.parse(donation.imageUri)
+                // photoUri = Uri.parse(game.imageUri)
                 }
             )
         }
