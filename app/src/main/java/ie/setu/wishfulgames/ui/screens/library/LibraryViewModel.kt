@@ -62,4 +62,13 @@ constructor(private val repository: FirestoreService,
         }
         _uiGames.value = filteredList
     }
+
+    fun filterByPrice(price: Int?) {
+        val filteredList = if (price == null) {
+            _games.value
+        } else {
+            _games.value.filter { it.price == price }
+        }
+        _uiGames.value = filteredList
+    }
 }
